@@ -114,6 +114,7 @@ function GameSpace(props) {
 
   if(findFocus(gamespace) === 0){
     document.removeEventListener('keydown', keyDownHandler);
+    console.log(gamespace[0].pokemon);
   }else{
     for(var i=0;i<gamespace.length;i++){
       if(gamespace[i].state === "winner"){
