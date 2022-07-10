@@ -1,7 +1,6 @@
 import classes from "./GuessBox.module.css";
 
 var bg_colors = {
-	"incorrect":"none",
 	"in_word":"yellow",
 	"correct":"green",
 	"empty":"none",

@@ -28,21 +28,45 @@ function GameSpace(props) {
   function checkAnswer(row){
     var word = row.pokemon;
     var wordset = word.split('');
-    wordset = new Set(wordset);
+    var is_winner = true;
 
     for(var i=0;i<word.length;i++){
       var letter = row.boxes[i].letter;
-      const is_in_word = wordset.has(letter);
       if(letter === word[i]){
         row.boxes[i].state = "correct";
-      }
-      else if(is_in_word){
-        row.boxes[i].state = "in_word";
-      }
-      else{
-        row.boxes[i].state = "incorrect"
+        for(var k=0;k<wordset.length;k++){
+          if(letter===wordset[k]){
+            wordset.splice(k, 1);
+            break;
+          }
+        }
+      }else{
+        is_winner = false;
       }
     }
+
+    for(var i=0;i<word.length;i++){
+      if(row.boxes[i].state==="correct"){
+        continue;
+      }
+      var letter = row.boxes[i].letter;
+      var is_in_word = false;
+      for(var k=0;k<wordset.length;k++){
+        if(letter===wordset[k]){
+          is_in_word = true;
+          wordset.splice(k, 1);
+          break;
+        }
+      }
+      if(is_in_word){
+        row.boxes[i].state = "in_word";
+      }
+    }
+
+    if(is_winner){
+      row.state = "winner";
+    }
+
     return row;
   }
 
@@ -54,7 +78,9 @@ function GameSpace(props) {
     if(foc[1]===-1 && e.key === "Enter"){
       var rowchange = checkAnswer(gamechange[foc[0]]);
       gamechange[foc[0]] = rowchange;
-      gamechange[foc[0]].state = "filled";
+      if(gamechange[foc[0]].state !== "winner"){
+        gamechange[foc[0]].state = "filled";
+      }
     }
     else if(e.key === "Backspace"){
       if(foc[1]===-1){
@@ -76,6 +102,12 @@ function GameSpace(props) {
 
   if(findFocus(gamespace) === 0){
     document.removeEventListener('keydown', keyDownHandler);
+  }else{
+    for(var i=0;i<gamespace.length;i++){
+      if(gamespace[i].state === "winner"){
+        document.removeEventListener('keydown', keyDownHandler)
+      }
+    }
   }
 
   return (
