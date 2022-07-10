@@ -68,7 +68,7 @@ function App() {
           </button>
         </div>
       </header>
-      <GameSpace id="gamespace" rows={gs_init} wordlength={wordlength} validKeys={validKeys}/>
+      <GameSpace id="gamespace" rows={gs_init} wordlength={wordlength} validKeys={validKeys} pokemonlist={pokemonlist}/>
       <div className="Keyboard">
       </div>
     </div>

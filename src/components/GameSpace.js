@@ -8,6 +8,9 @@ function GameSpace(props) {
 
   var wordlength = props.wordlength;
   var validKeys = props.validKeys;
+  var pokemonlist = props.pokemonlist;
+  var pokemonset = new Set(pokemonlist);
+
 
   const [gamespace, setGamespace] = useState(props.rows);
 
@@ -26,6 +29,7 @@ function GameSpace(props) {
   }
 
   function checkAnswer(row){
+
     var word = row.pokemon;
     var wordset = word.split('');
     var is_winner = true;
@@ -70,12 +74,20 @@ function GameSpace(props) {
     return row;
   }
 
+
   function keyDownHandler(e){
     document.removeEventListener('keydown', keyDownHandler);
     const is_valid_key = validKeys.has(e.key);
     var foc = findFocus(gamespace);
     var gamechange = gamespace;
-    if(foc[1]===-1 && e.key === "Enter"){
+
+    var guess = "";
+    for(var i=0;i<wordlength;i++){
+      guess = guess+gamechange[foc[0]].boxes[i].letter;
+    }
+    var is_pokemon = pokemonset.has(guess);
+
+    if(foc[1]===-1 && e.key === "Enter" && is_pokemon){
       var rowchange = checkAnswer(gamechange[foc[0]]);
       gamechange[foc[0]] = rowchange;
       if(gamechange[foc[0]].state !== "winner"){
