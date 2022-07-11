@@ -1,8 +1,10 @@
-import classes from "./KeyBox.module.js";
+import classes from "./KeyBox.module.css";
 
 function KeyBox(props) {
 	return (
-
+		<button className={classes.KeyBox}>
+			{props.id}
+		</button>
 	);
 }
 

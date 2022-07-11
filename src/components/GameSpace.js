@@ -11,9 +11,6 @@ function GameSpace(props) {
   var pokemonlist = props.pokemonlist;
   var pokemonset = new Set(pokemonlist);
 
-
-  const [gamespace, setGamespace] = useState(props.rows);
-
   function findFocus(gamespace){
     for(var i=0; i<gamespace.length; i++) {
       if(gamespace[i].state === "empty"){
@@ -78,8 +75,8 @@ function GameSpace(props) {
   function keyDownHandler(e){
     document.removeEventListener('keydown', keyDownHandler);
     const is_valid_key = validKeys.has(e.key);
-    var foc = findFocus(gamespace);
-    var gamechange = gamespace;
+    var foc = findFocus(props.gamespace);
+    var gamechange = props.gamespace;
 
     var guess = "";
     for(var i=0;i<wordlength;i++){
@@ -107,17 +104,17 @@ function GameSpace(props) {
       gamechange[foc[0]].boxes[foc[1]].letter = e.key;
       gamechange[foc[0]].boxes[foc[1]].state = "filled"
     }
-    setGamespace([...gamechange]);
+    props.setGamespace([...gamechange]);
   }
 
   document.addEventListener('keydown', keyDownHandler);
 
-  if(findFocus(gamespace) === 0){
+  if(findFocus(props.gamespace) === 0){
     document.removeEventListener('keydown', keyDownHandler);
-    console.log(gamespace[0].pokemon);
+    console.log(props.gamespace[0].pokemon);
   }else{
-    for(var i=0;i<gamespace.length;i++){
-      if(gamespace[i].state === "winner"){
+    for(var i=0;i<props.gamespace.length;i++){
+      if(props.gamespace[i].state === "winner"){
         document.removeEventListener('keydown', keyDownHandler)
       }
     }
@@ -125,7 +122,7 @@ function GameSpace(props) {
 
   return (
     <div className={classes.GameSpace}>
-      {gamespace.map((row) => (<GameRow
+      {props.gamespace.map((row) => (<GameRow
         key = {row.id}
         id = {row.id}
         state = {row.state}

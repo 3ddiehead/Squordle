@@ -1,0 +1,5 @@
+.KeyRow {
+  display: grid;
+  align-items: center;
+  flex-wrap: nowrap;
+}
