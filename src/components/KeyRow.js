@@ -7,6 +7,8 @@ function KeyRow(props){
 			{props.keys.map((item) => (<KeyBox
 				key={item}
 				id={item}
+				handler={props.handler}
+				gamespace={props.gamespace}
 				setGamespace={props.setGamespace} 
 				/>))
 			}
