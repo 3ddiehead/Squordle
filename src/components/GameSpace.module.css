@@ -1,5 +1,9 @@
 .GameSpace {
-  display:  grid;
+  padding: 10px;
+  box-sizing: border-box;
+  display: grid;
   align-items: center;
-  justify-content: center;
+  grid-gap: 5px;
+  width: 508px;
+  height: 380px;
 }

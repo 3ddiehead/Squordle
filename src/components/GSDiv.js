@@ -1,9 +1,11 @@
+import classes from "./GSDiv.module.css";
 import GameSpace from "./GameSpace.js";
 import Keyboard from "./Keyboard.js";
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 function GSDiv(props){
 	const [gamespace, setGamespace] = useState(props.rows);
+	const [letterStates, setLetterStates] = useState(props.letterStates)
 
 	var wordlength = props.wordlength;
   	var validKeys = props.validKeys;
@@ -25,16 +27,20 @@ function GSDiv(props){
 	    return 0
 	}
 
-	function checkAnswer(row){
+	function checkAnswer(row, letterStates, setLetterStates){
 
 	    var word = row.pokemon;
 	    var wordset = word.split('');
 	    var is_winner = true;
 
+	    var ls_change = letterStates;
+
 	    for(var i=0;i<word.length;i++){
 	      var letter = row.boxes[i].letter;
 	      if(letter === word[i]){
 	        row.boxes[i].state = "correct";
+	        ls_change["correctGuess"].add(letter);
+	        setLetterStates(ls_change);
 	        for(var k=0;k<wordset.length;k++){
 	          if(letter===wordset[k]){
 	            wordset.splice(k, 1);
@@ -61,12 +67,18 @@ function GSDiv(props){
 	      }
 	      if(is_in_word){
 	        row.boxes[i].state = "in_word";
+	        ls_change["inWord"].add(letter);
+	      }else if(row.boxes[i].state==="filled"){
+	      	row.boxes[i].state = "incorrect";
+	      	ls_change["notInWord"].add(letter);
 	      }
 	    }
 
 	    if(is_winner){
 	      row.state = "winner";
 	    }
+
+	    setLetterStates(ls_change);
 
 	    return row;
 	}
@@ -88,11 +100,12 @@ function GSDiv(props){
 	    var is_pokemon = pokemonset.has(guess);
 
 	    if(foc[1]===-1 && input === "Enter" && is_pokemon){
-	      var rowchange = checkAnswer(gamechange[foc[0]]);
+	      var rowchange = checkAnswer(gamechange[foc[0]],letterStates,setLetterStates);
 	      gamechange[foc[0]] = rowchange;
 	      if(gamechange[foc[0]].state !== "winner"){
 	        gamechange[foc[0]].state = "filled";
 	      }
+	      gamechange[foc[0]].guess = guess;
 	    }
 	    else if(input === "Backspace"){
 	      if(foc[1]===-1){
@@ -124,9 +137,9 @@ function GSDiv(props){
 	  }
 
 	return (
-		<div>
+		<div className={classes.GSDiv}>
 			<GameSpace id="gamespace" gamespace={gamespace} wordlength={props.wordlength} pokemonlist={props.pokemonlist}/>
-			<Keyboard id="keyboard" handler={keyDownHandler} gamespace={gamespace} setGamespace={setGamespace} validKeys={props.validKeys}/>
+			<Keyboard id="keyboard" letterStates={letterStates} keyHandler={keyDownHandler} gamespace={gamespace} setGamespace={setGamespace} validKeys={props.validKeys}/>
 		</div>
 	)
 }

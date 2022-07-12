@@ -18,6 +18,7 @@ code {
   align-items: center;
   justify-content: space-between;
   border-bottom: 2px solid #808080;
+  padding: 8px;
 }
 
 .LeftMenu {
@@ -51,15 +52,7 @@ code {
   padding-right: 4px;
 }
 
-
-
-
-
-.Keyboard {
-  display: flex;
-}
-
-.KeyRow {
-  display: flex;
+.Spacer {
+  padding-top: 20px;
 }
 
