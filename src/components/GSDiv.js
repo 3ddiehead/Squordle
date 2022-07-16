@@ -1,6 +1,8 @@
 import classes from "./GSDiv.module.css";
 import GameSpace from "./GameSpace.js";
 import Keyboard from "./Keyboard.js";
+import Backdrop from "./Backdrop.js";
+import WinDisplay from "./WinDisplay.js"
 import { useState, useEffect } from 'react';
 
 function GSDiv(props){
@@ -135,11 +137,14 @@ function GSDiv(props){
 	      }
 	    }
 	  }
+	  
 
 	return (
 		<div className={classes.GSDiv}>
 			<GameSpace id="gamespace" gamespace={gamespace} wordlength={props.wordlength} pokemonlist={props.pokemonlist}/>
 			<Keyboard id="keyboard" letterStates={letterStates} keyHandler={keyDownHandler} gamespace={gamespace} setGamespace={setGamespace} validKeys={props.validKeys}/>
+			{showWinpage && <Backdrop gamespace={gamespace}/>}
+			{showWinpage && <WinDisplay gamespace={gamespace}/>}
 		</div>
 	)
 }
