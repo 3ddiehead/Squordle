@@ -2,7 +2,8 @@ import classes from "./GSDiv.module.css";
 import GameSpace from "./GameSpace.js";
 import Keyboard from "./Keyboard.js";
 import Backdrop from "./Backdrop.js";
-import WinDisplay from "./WinDisplay.js"
+import WinDisplay from "./WinDisplay.js";
+import LoseDisplay from "./LoseDisplay.js";
 import { useState, useEffect } from 'react';
 
 function GSDiv(props){
@@ -14,6 +15,9 @@ function GSDiv(props){
   	var validKeysSet = new Set(validKeys);
   	var pokemonlist = props.pokemonlist;
   	var pokemonset = new Set(pokemonlist);
+  	var showWinpage = false;
+  	var showLosepage = false;
+  	var showBackdrop = false;
 
   	function findFocus(gamespace){
 	    for(var i=0; i<gamespace.length; i++) {
@@ -130,10 +134,14 @@ function GSDiv(props){
 	  if(findFocus(gamespace) === 0){
 	    document.removeEventListener('keydown', keyDownHandler);
 	    console.log(gamespace[0].pokemon);
+	    showLosepage = true;
+	    showBackdrop = true;
 	  }else{
 	    for(var i=0;i<gamespace.length;i++){
 	      if(gamespace[i].state === "winner"){
 	        document.removeEventListener('keydown', keyDownHandler)
+	        showWinpage = true;
+	        showBackdrop = true;
 	      }
 	    }
 	  }
@@ -143,8 +151,9 @@ function GSDiv(props){
 		<div className={classes.GSDiv}>
 			<GameSpace id="gamespace" gamespace={gamespace} wordlength={props.wordlength} pokemonlist={props.pokemonlist}/>
 			<Keyboard id="keyboard" letterStates={letterStates} keyHandler={keyDownHandler} gamespace={gamespace} setGamespace={setGamespace} validKeys={props.validKeys}/>
-			{showWinpage && <Backdrop gamespace={gamespace}/>}
+			{showBackdrop && <Backdrop/>}
 			{showWinpage && <WinDisplay gamespace={gamespace}/>}
+			{showLosepage && <LoseDisplay gamespace={gamespace}/>}
 		</div>
 	)
 }

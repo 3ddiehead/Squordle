@@ -1,6 +1,6 @@
-import classes from "./WinDisplay.module.css";
+import classes from "./LoseDisplay.module.css"
 
-function WinDisplay(props){
+function LoseDisplay(props){
 	var gamespace = props.gamespace;
 	var spriteRef = "https://img.pokemondb.net/s.png";
 	var answer = gamespace[0].pokemon;
@@ -30,11 +30,11 @@ function WinDisplay(props){
 	}
 
 	return(
-		<div className={classes.WinDisplay}>
+		<div className={classes.LoseDisplay}>
 			<img style={{width:"256px", height:"192px", position:"relative"}} src={spriteRef}/>
 			<p>The correct pokemon was {answer}</p>
 		</div>
 	);
-}
+};
 
-export default WinDisplay;
+export default LoseDisplay;
