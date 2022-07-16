@@ -1,0 +1,10 @@
+.WinDisplay {
+	position: fixed;
+	z-index: 2;
+	border-radius: 8px;
+	background-color:#ffffff;
+	width: 400px;
+	height: 600px;
+	top: 50vh;
+	left: 50vw;
+}
