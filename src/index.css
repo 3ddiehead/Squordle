@@ -34,22 +34,28 @@ code {
   background: inherit;
   border: inherit;
   padding-left: 12px;
+  cursor: pointer;  
 }
 
 .HelpButton {
   display: flex;
   background: inherit;
   border: inherit;
+  cursor: pointer;
 }
 
 .GameTitle {
   padding-top: 6px;
+  padding-right: 32px;
 }
 
 .RightMenu {
   display: flex;
+  background: none;
+  border: none;
   justify-content: flex-end;
   padding-right: 4px;
+  align-items: center;
 }
 
 .Spacer {

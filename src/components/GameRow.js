@@ -7,6 +7,7 @@ function GameRow(props) {
 	var spriteRef = "https://img.pokemondb.net/s.png";
 	var guess = props.guess;
 	var upDownPos = props.upDownPos;
+	var fromGame = ""
 
 	var hyphenator = {
 		"jangmoo" : "jangmo-o",
@@ -22,14 +23,23 @@ function GameRow(props) {
 		"mimejr" : "mime-jr",
 		"porygonz" : "porygon-z",
 		"mrrime" : "mr-rime",
+		"enamorus" : "enamorus-incarnate"
 	}
 
 	if(hyphenator[guess]){
 		guess = hyphenator[guess];
 	}
 
+	var pkmnHomeOnly = new Set(["wyrdeer","kleavor","ursaluna","sneasler","overqwil","enamorus-incarnate"]);
+
+	if(pkmnHomeOnly.has(guess)){
+		fromGame = "home/normal/1x/";
+	}else{
+		fromGame = "sword-shield/icon/"
+	}
+
 	if(guess!=""){
-		spriteRef = "https://img.pokemondb.net/sprites/sword-shield/icon/"+guess+".png"
+		spriteRef = "https://img.pokemondb.net/sprites/"+fromGame+guess+".png"
 	}
 
 	return (
