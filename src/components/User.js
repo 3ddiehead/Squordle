@@ -3,10 +3,10 @@
 */
 
 import classes from "./style/User.module.css";
-
-import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 
+import { useContext, useState, useEffect } from 'react';
+import { GameContext } from '../Squordle.js';
 
 function saveKeyGen() {
     return Math.floor(Math.random() * 1000000000000)
@@ -15,7 +15,12 @@ function saveKeyGen() {
 
 function User(props)
 {
-    const [username, setUsername] = useState("");
+    const { 
+        user,
+        userHandler,
+    } = useContext(GameContext); 
+
+    const [username, setUsername] = useState('');
     const [pwd, setPwd] = useState('');
 
     //An error of 0 exists when there is no error
@@ -27,20 +32,19 @@ function User(props)
     //6 on failed save
     //7 on successful save
     //8 on invalid username for sign up
-
     const [userErr, setUserErr] = useState(0);
-
-    const user = props.user;
 
     const handleSubmit = (event) => { event.preventDefault(); };
 
     function signUp() {
-        let data = { user: username,
-                     pass: pwd,
-                     inventory: JSON.parse(localStorage.inventory),
-                     pokeDollars: Number(localStorage.pokeDollars),
-                     region: localStorage.region,
-                     shuckleInfo: JSON.parse(localStorage.shuckleInfo) };
+        let data = { 
+            user: username,
+            pass: pwd,
+            inventory: JSON.parse(localStorage.inventory),
+            pokeDollars: Number(localStorage.pokeDollars),
+            region: localStorage.region,
+            shuckleInfo: JSON.parse(localStorage.shuckleInfo) 
+        };
 
         async function postUser() {
             return await fetch(`/.netlify/functions/signUp`, {
@@ -49,16 +53,14 @@ function User(props)
             }).then(res => res.json());
         } 
 
-        if(username !== "" && username !== "admin" && username !== "guest") {
+        if (username !== "" && username !== "admin" && username !== "guest") {
             postUser()
                 .then(function(result) {
                     if (result.length == 1)
                         setUserErr(2);
                     else setUserErr(3);
                 });
-        } else {
-            setUserErr(8);
-        }
+        } else setUserErr(8);
     }
 
     function signIn() {
@@ -72,9 +74,11 @@ function User(props)
         async function fetchUser() {
             return await fetch(`/.netlify/functions/signIn`, {
                 method: "POST",
-                body: JSON.stringify({ user: username, 
-                                       pass: pwd, 
-                                       saveKey: saveKey }),
+                body: JSON.stringify({ 
+                    user: username, 
+                    pass: pwd, 
+                    saveKey: saveKey 
+                }),
             }).then(res => res.json())
               .catch((err) => console.error(err));
         }
@@ -83,8 +87,7 @@ function User(props)
             .then(function(result) {
                 if (result.length > 0) {
                     setUserErr(7);
-                    props.setToggledGM(true);
-                    props.userHandler(result[0]);
+                    userHandler(result[0]);
                 } else throw 1;
             }).catch(err => {
                 console.log("User DNE");
@@ -94,12 +97,14 @@ function User(props)
 
     function saveData()
     {
-        let data = { user: localStorage.user,
-                     inventory: JSON.parse(localStorage.inventory),
-                     pokeDollars: Number(localStorage.pokeDollars),
-                     region: localStorage.region,
-                     shuckleInfo: JSON.parse(localStorage.shuckleInfo),
-                     saveKey: localStorage.saveKey };
+        let data = { 
+            user: localStorage.user,
+            inventory: JSON.parse(localStorage.inventory),
+            pokeDollars: Number(localStorage.pokeDollars),
+            region: localStorage.region,
+            shuckleInfo: JSON.parse(localStorage.shuckleInfo),
+            saveKey: localStorage.saveKey 
+        };
 
         async function updateUserInfo() {
             return await fetch(`/.netlify/functions/save`, {
@@ -120,17 +125,25 @@ function User(props)
 
     function logOut()
     {
-        localStorage.user = "guest";
-        localStorage.saveKey = "";
-        props.userHandler({ ...props.user, 
-                            name: localStorage.user, 
-                            saveKey: localStorage.saveKey });
+        localStorage.user = 'guest';
+        localStorage.saveKey = '';
+        userHandler({ 
+            ...user, 
+            name: localStorage.user, 
+            saveKey: localStorage.saveKey 
+        });
         setUserErr(5);
     }
 
 	return (
         <> 
-            <a style= {{paddingTop: "1em", textAlign: "center", fontWeight: "bold"}}> *WARNING* <br/> YOUR SAVE KEY WILL NOT BE SECURED</a>
+            <a style= {{
+                paddingTop: "1em", 
+                textAlign: "center", 
+                fontWeight: "bold"
+            }}> 
+            *WARNING* <br/>YOUR SAVE KEY WILL NOT BE SECURED</a>
+
             {userErr === 0 && localStorage.user === "guest" &&
                 <p> Enter your login information: </p>}
             {userErr === 1 && 
@@ -153,7 +166,7 @@ function User(props)
             {user.name === "guest" &&
             <form className = {classes.loginForm} onSubmit={handleSubmit}>
                 <div className = {classes.typingField}>
-                    <label> username:</label>
+                    <label>username: </label>
                     <input
                        value = {username} 
                        onChange = {(e) => setUsername(e.target.value)}
@@ -177,7 +190,7 @@ function User(props)
                     />
                 </div>
             </form>}
-        {!(user.name === "guest") && 
+        { user.name !== "guest" && 
             <div className = {classes.loginForm}>
                 <h2> WELCOME {user.name} ! </h2>
                 <form className = {classes.submitOps} onSubmit = {handleSubmit}>
