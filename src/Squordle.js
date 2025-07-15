@@ -52,7 +52,6 @@ function Squordle(props)
             const tempList = pokeList.filter(p => p.potd === "TRUE");
             tempList.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified)); 
             let potd = JSON.parse(localStorage.potd);
-            console.log(tempList[0]);
             if (potd['daily'] !== tempList[0].name) {
                 potd['daily'] = tempList[0].name;
                 potd['isStarted'] = false;

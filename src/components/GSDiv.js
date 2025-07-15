@@ -139,7 +139,6 @@ function GSDiv(props)
     // KEY DOWN HANDLER -------------------------------------------------------
     function keyDownHandler(e)
     {
-        console.log(pokeAnswer);
         const input = e.key || e.target.value;
 
         const isBackdropActive = JSON.parse(localStorage.backdrop);
