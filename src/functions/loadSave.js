@@ -19,7 +19,7 @@ function loadSave()
         // GAMEMODE INFO ---
         // 0: daily, 1: freeplay, 2: daily + ez, 3: freeplay + ez
         if (!(localStorage.gameMode))
-            localStorage.gameMode = 2;
+            localStorage.gameMode = 0;
         if (!(localStorage.genFilter)) {
             let filter = { 
                 1: false,
