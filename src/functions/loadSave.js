@@ -4,7 +4,7 @@
 
 function loadSave()
 {
-    if (localStorage.length !== 13)
+    if (localStorage.length !== 14)
     {
         if (!(localStorage.firstTime))
             localStorage.firstTime = true;
@@ -68,6 +68,9 @@ function loadSave()
         } 
         if (!(localStorage.saveKey))
             localStorage.saveKey = "";
+
+        if (!(localStorage.lastPOTDDate))
+            localStorage.lastPOTDDate = Date().toISOString();
     };
 };
 
