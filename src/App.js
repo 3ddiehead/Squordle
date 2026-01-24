@@ -38,7 +38,7 @@ function App()
 
     useEffect(() => {
         if (!pokeList) {
-            current_date = Date().toISOString();
+            const current_date = Date().toISOString();
             if (localStorage.pokeList === 'null' || current_date.slice(0,10) === localStorage.lastPOTDDate.slice(0,10)) { 
                 pokePromise().then((res) => {
                     localStorage.pokeList = JSON.stringify(res);
