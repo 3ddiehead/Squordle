@@ -54,6 +54,7 @@ function Squordle(props)
             let potd = JSON.parse(localStorage.potd);
             if (potd['daily'] !== tempList[0].name) {
                 potd['daily'] = tempList[0].name;
+                potd['isSaved'] = false;
                 potd['isStarted'] = false;
                 potd['isWon'] = false;
             }
