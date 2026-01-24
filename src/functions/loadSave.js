@@ -70,7 +70,8 @@ function loadSave()
             localStorage.saveKey = "";
 
         if (!(localStorage.lastPOTDDate))
-            localStorage.lastPOTDDate = Date().toISOString();
+            const d = new Date();
+            localStorage.lastPOTDDate = d.toISOString();
     };
 };
 
