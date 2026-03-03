@@ -40,7 +40,7 @@ function App()
         if (!pokeList) {
             const d = new Date();
             const current_date = d.toISOString();
-            if (localStorage.pokeList === 'null' || current_date.slice(0,10) === localStorage.lastPOTDDate.slice(0,10)) { 
+            if (localStorage.pokeList === 'null' || current_date.slice(0,10) !== localStorage.lastPOTDDate.slice(0,10)) { 
                 pokePromise().then((res) => {
                     localStorage.pokeList = JSON.stringify(res);
                     setPokeList(res);
